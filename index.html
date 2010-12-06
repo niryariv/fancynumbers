@@ -8,7 +8,7 @@
 
   <title>Odd Color</title>
   <link rel="stylesheet" href="master.css" type="text/css" />		
-  <link rel="stylesheet" href="oddcolor.css" type="text/css" />		
+  <link rel="stylesheet" href="mindset.css" type="text/css" />		
 
   <!-- iPad/iPhone specific css below, add after your main css >
   <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
@@ -28,8 +28,6 @@
   document.addEventListener("touchmove", preventBehavior, false);
   */
 
-(function($){ $.fn['unbind'] = function(){ return $(this) } })(Zepto);
-
   function onBodyLoad()
   {
     document.addEventListener("deviceready",onDeviceReady,false);
@@ -44,106 +42,55 @@
   var current = -1;
   
   var colors = ['#6566ff', '#00ccff', '#33cd34', '#f8f701', '#fd6601', '#fe0002','#960298', '#960300'];
-  var rightColor = '';
-  var wrongColor = '';
+  var userColor = 0;
   var isPrefs = false;
   
-  function getNewColor(origColor){
-    var color = origColor; 
-    while(color == origColor)
-      color = colors[Math.floor(Math.random() * colors.length)];
-      
-    return color;
-  }
+  var totalCards = 0;
+  var totalUserCard = 0;
   
+  var intvl = null;
   //touchend
   //mouseup
   var ev = 'mouseup';
   
-  $(document).ready(function(){    
-    createButtons(9);
-    $('.face', 'div#container', '.content').css({
-      width: window.innerWidth-4+'px',
-      height: window.innerHeight-4+'px'
-    });
+  $(document).ready(function(){        
+    setColor(userColor);
+    $('#usercard').css('background', colors[userColor]);
+    $('.card').bind(ev, stop);
+    intvl = setInterval(changeCard, 100);
     
-    // $('.togglePrefs').css({
-    //   'line-height' : window.innerHeight+'px'
-    // }).bind(ev, togglePrefs);
-    
-    $('body').bind('swipe', togglePrefs);
-    
-    $('#score').css({'font-size': Math.floor(window.innerHeight * 0.9)+'px', 'line-height' : window.innerHeight+'px'});
-    
-    $('.button').bind(ev, function(e){
-      // $(this).anim({ rotate: '720deg', opacity: .5 }, 2, 'ease-out');
-      if(this.id.substring(1) == current)
-        rightChoice();
-      else
-        wrongChoice();        
-    });
-    
-    getNext();
   });
+  
+  function changeCard(){
+    console.log('change');
+      var color = getNextColor();
+      totalCards++;
+      if(color == userColor)
+        totalUserCard++;
+      setColor(color);
+  }
 
-  function createButtons(num){
-    var sqr = Math.sqrt(num);
-    var marg = 1;
-    var w = Math.floor((100 - marg * sqr)  / sqr) ;
-    var h = w;
+  function getNextColor(origColor){
+    var colorOptions = [ Math.floor(Math.random() * colors.length),
+                    Math.floor(Math.random() * colors.length),
+                    Math.floor(Math.random() * colors.length)
+                  ];
     
-    for(var r=0; r < sqr; r++){
-      for(var l=0; l < sqr; l++){
-        var b = document.createElement('div');
-        
-        $('#score').before(b);
-        $(b).attr('id', 'b'+(r*sqr+l)).addClass('button').css({
-          position: 'relative',
-          width: w+'%',
-          height: h+'%',
-          'min-height': h+'%',
-          'margin-top' : marg+'%',
-          'margin-left' : marg+'%'
-        });
-      }
-    }
+    color = colorOptions[Math.floor(Math.random() * colorOptions.length)];
+      
+    return color;
   }
 
-  function rightChoice(){
-    incScore();
-    getNext();
+  function setColor(color) {
+    $('#card').css('background', colors[color]);
   }
 
-  function incScore(){
-    score++;
-    if(score == 10)
-      $('#score').css({'font-size': (window.innerHeight-4)*0.8+'px'});
-    if(score == 100)
-      $('#score').css({'font-size': (window.innerHeight-4)*0.6+'px'});
-    if(score == 1000)
-      $('#score').css({'font-size': (window.innerHeight-4)*0.5+'px'});
-    $('.button').anim({ rotateZ : '0deg'}, 0.74);
-    $('#score').text(score);//.css('opacity', 0.5);
+  function stop(e){
+    clearInterval(intvl);
+    alert('total: '+totalCards+', user chosen card: '+totalUserCard);
+    alert('expected appearance: '+(1 / colors.length)+', actual appearance: '+ (totalUserCard / totalCards));
   }
   
-  function wrongChoice(){
-    // .anim({rotateZ : '-5deg'}, 2);
-    alert('done');
-  }
-  
-  function getNext(){
-    var next = Math.floor(Math.random() * $('.button').dom.length );
-    while(next == current){
-      next = Math.floor(Math.random() * $('.button').dom.length );
-    }    
-    rightColor = getNewColor(rightColor);
-    wrongColor = getNewColor(rightColor);
-    
-    $('.button').css('background', wrongColor);
-    $('#b'+next).css('background', rightColor);
-    current = next;
-  }
-
   function togglePrefs(e){
     if($('#prefs').hasClass('showPrefs')) {
       $('#prefs').removeClass('showPrefs');
@@ -159,14 +106,18 @@
 </head>
 <body id="stage" class="theme" onload="onBodyLoad()">
   <div id="page1" class="content current">
-      <div id="game">
-        <div id="score">0</div>
-        <!-- <div class="togglePrefs">+</div> -->
-      </div>
-      <div id="prefs">
-        prefs
-        <div class="togglePrefs">+</div>
-      </div>
-    </div><!-- /page1  -->
+    <div id="usercard" class="card"></div>
+    <div id="card" class="card"></div>
+  </div><!-- /page1  -->
+  <div id="page2" class="content">
+    <div id="prefs">
+      prefs:
+      - your color
+      - change speed
+      - users
+      - leaderboard
+      <div class="togglePrefs">+</div>
+    </div>
+  </div>  
 </body>
 </html>

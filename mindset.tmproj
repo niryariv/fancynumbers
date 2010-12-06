@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>index.html</string>
+	<string>mindset.css</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -13,8 +13,6 @@
 			<string>www</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
-			<key>selected</key>
-			<true/>
 			<key>sourceDirectory</key>
 			<string></string>
 		</dict>
@@ -28,34 +26,34 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>19</integer>
+				<integer>64</integer>
 				<key>line</key>
-				<integer>60</integer>
+				<integer>53</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>56</integer>
+			<integer>41</integer>
 		</dict>
-		<key>oddcolor.css</key>
+		<key>mindset.css</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>8</integer>
+				<integer>22</integer>
 				<key>line</key>
-				<integer>9</integer>
+				<integer>16</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>oddcolor.css</string>
 		<string>index.html</string>
+		<string>mindset.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
@@ -70,6 +68,6 @@
 		</dict>
 	</dict>
 	<key>windowFrame</key>
-	<string>{{390, 66}, {908, 741}}</string>
+	<string>{{293, 130}, {908, 741}}</string>
 </dict>
 </plist>
