@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>mindset.css</string>
+	<string>todo.todo</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -26,33 +26,79 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>64</integer>
-				<key>line</key>
 				<integer>53</integer>
+				<key>line</key>
+				<integer>106</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>41</integer>
+			<integer>85</integer>
 		</dict>
 		<key>mindset.css</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>22</integer>
+				<integer>21</integer>
 				<key>line</key>
-				<integer>16</integer>
+				<integer>33</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>2</integer>
+			<integer>16</integer>
+		</dict>
+		<key>todo.todo</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>6</integer>
+				<key>line</key>
+				<integer>19</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>zepto.js</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>20</integer>
+				<key>line</key>
+				<integer>209</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>190</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>13</integer>
+				<key>line</key>
+				<integer>209</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>20</integer>
+				<key>line</key>
+				<integer>209</integer>
+			</dict>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>index.html</string>
+		<string>todo.todo</string>
+		<string>zepto.js</string>
 		<string>mindset.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
@@ -68,6 +114,6 @@
 		</dict>
 	</dict>
 	<key>windowFrame</key>
-	<string>{{293, 130}, {908, 741}}</string>
+	<string>{{339, 68}, {908, 741}}</string>
 </dict>
 </plist>

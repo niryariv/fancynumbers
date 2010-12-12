@@ -6,8 +6,16 @@ div.content{
   min-height: 100%;
 }
 
-div#page1{
+div.content{
   overflow: hidden;
+}
+
+.hidden{
+  display: none;
+}
+
+.shown{
+  display: block;
 }
 
 div.card{
