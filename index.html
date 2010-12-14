@@ -51,15 +51,23 @@
   var intvl = null;
   //touchend
   //mouseup
-  var ev = 'mouseup';
+  var ev = 'touchend';
   
-  $(document).ready(function(){        
+  $(document).ready(function(){         
+       
     setColor(userColor);
     $('#usercard').css('background', colors[userColor]);
-    $('.card').bind(ev, stop);
-    intvl = setInterval(changeCard, 100);
-    
+    // $('.card').bind(ev, stop);
+    // intvl = setInterval(changeCard, 100);
+        
   });
+  
+  function rotateIt(e){
+    $('#br').addClass('tileHidden');
+    $('#bl').addClass('tileHidden');
+    $('#tr').addClass('tileHidden');
+    return false;
+  }
   
   function changeCard(){
     console.log('change');
@@ -91,36 +99,65 @@
     alert('expected appearance: '+(1 / colors.length)+', actual appearance: '+ (totalUserCard / totalCards));
   }
   
-  function togglePrefs(e){
-    if($('#prefs').hasClass('showPrefs')) {
-      $('#prefs').removeClass('showPrefs');
-      $('#game').removeClass('showPrefs');      
-    }
-    else{
-      $('#prefs').addClass('showPrefs');
-      $('#game').addClass('showPrefs');
-    }  
-  }
 
+
+////////// MENU ////////////
+  var currPage = null;
+  var maxTransTime = 2;
+
+  function goToPage(pageId) {
+    var elem = $('#menu');
+    var transTime = maxTransTime;
+    while(elem.attr('id') != pageId) {
+      elem.css('-webkit-transition-duration', transTime+'s').addClass('tileHidden');
+      transTime = transTime + 0.2;
+      elem = elem.prev();
+      currPage = elem;
+    }
+    // $('#back').css('opacity', 1);
+  }
+  
+  function goHome() {
+    if(!currPage) { return false; }
+    
+    // $('#back').css('opacity', 0);
+    
+    
+    var elem = currPage;
+    currPage = null;
+    var transTime = maxTransTime;
+    
+    while(elem.attr('id') != 'menu') {
+      elem = elem.next();
+      elem.css('-webkit-transition-duration', transTime+'s').removeClass('tileHidden');
+      transTime = transTime + 0.2;
+    }
+  }
+  
   </script>
 </head>
 <body id="stage" class="theme" onload="onBodyLoad()">
-  <div id="page1" class="content current">
-    <h1 class="title">test</h1>
-  </div>
-  <div id="page2" class="content hidden">
-    <div id="usercard" class="card"></div>
-    <div id="card" class="card"></div>
-  </div><!-- /page1  -->
-  <div id="page3" class="content hidden">
-    <div id="prefs">
-      prefs:
-      - your color
-      - change speed
-      - users
-      - leaderboard
-      <div class="togglePrefs">+</div>
-    </div>
+  <div id="frame" class="content current">
+      <div id="test" class="tile hinted">
+        <h1 class="title">TEST</h1>
+      </div>
+      <div id="settings" class="tile hinted">
+        <h1 class="title">SETTINGS</h1>
+      </div>
+      <div id="help" class="tile hinted">
+        <h1 class="title">HELP</h1>
+      </div>
+      <div id="menu" class="tile hinted">
+        <h1 class="title">MENU</h1>
+        
+        <a href="javascript:goToPage('test')" id="click">test</a> <br/>
+        <a href="javascript:goToPage('settings')" id="click">settings</a> <br/>
+        <a href="javascript:goToPage('help')" id="click">help</a> <br/>        
+        <div id="back">
+          <a href="javascript:goHome()" id="click">Home</a> <br/>        
+        </div>
+      </div>
+
   </div>  
 </body>
 </html>

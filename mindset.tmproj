@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>todo.todo</string>
+	<string>mindset.css</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -26,28 +26,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>53</integer>
+				<integer>19</integer>
 				<key>line</key>
-				<integer>106</integer>
+				<integer>53</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>85</integer>
+			<integer>34</integer>
 		</dict>
 		<key>mindset.css</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>21</integer>
+				<integer>28</integer>
 				<key>line</key>
-				<integer>33</integer>
+				<integer>91</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>16</integer>
+			<integer>56</integer>
 		</dict>
 		<key>todo.todo</key>
 		<dict>
@@ -68,37 +68,21 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>20</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>209</integer>
+				<integer>11</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>190</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>13</integer>
-				<key>line</key>
-				<integer>209</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>20</integer>
-				<key>line</key>
-				<integer>209</integer>
-			</dict>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>index.html</string>
-		<string>todo.todo</string>
 		<string>zepto.js</string>
+		<string>todo.todo</string>
 		<string>mindset.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
