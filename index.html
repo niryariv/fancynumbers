@@ -17,6 +17,10 @@
   <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
   <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
   <script type="text/javascript" charset="utf-8" src="iscroll.js"></script>
+  <script type="text/javascript" charset="utf-8" src="persistence/persistence.js"></script>
+  <script type="text/javascript" charset="utf-8" src="persistence/persistence.store.sql.js"></script>
+  <script type="text/javascript" charset="utf-8" src="persistence/persistence.store.websql.js"></script>
+  
   <script type="text/javascript" charset="utf-8">
 
 
@@ -65,7 +69,57 @@
 
     myScroll = new iScroll('menuInner', {desktopCompatibility:true});
         
+        
+    prepDB();    
+    
+    // testDB();
   });
+  
+  var User;
+  var Test;
+  
+  
+  
+  function prepDB(){
+    if (window.openDatabase) {
+      persistence.store.websql.config(persistence, 'mindset', 'MindSet App DB', 5 * 1024 * 1024);
+    } else {
+      persistence.store.memory.config(persistence);
+    }
+    
+    User = persistence.define('users', {
+      name: "TEXT"
+    });
+    User.index('name', {unique:true});
+    
+    
+    Test = persistence.define('tests', {
+      timestamp: "DATE",
+      metadata: "JSON"
+    });
+    Test.index('timestamp');
+    
+    User.hasMany('tests', Test, 'tests');
+    
+    persistence.schemaSync();
+    
+    User.findBy('name', '', function(r){
+      if(!r){
+        var def = new User({'name': ''});
+        persistence.add(def);
+      }
+    });
+    
+  }
+  
+  function testDB(){
+    var allUsers = User.all();    
+    allUsers.list(null, function (results) {
+        results.forEach(function (r) {
+           alert(r.id);
+        });
+    });
+  }
   
   function rotateIt(e){
     $('#br').addClass('tileHidden');
@@ -164,7 +218,7 @@
         <div id="helpInner" class="tileInner">
           <h1 class="title">MindSet / Help</h1>
           <p>
-          Lorem ipsum dolor sit amet, <a href="">test</a> consectetuer adipiscing elit. Morbi commodo, ipsum sed pharetra gravida, <input type="text" value="test"></input> orci magna rhoncus neque, id pulvinar odio lorem non turpis. Nullam sit amet enim. Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh eget ipsum. Donec porttitor ligula eu dolor. Maecenas vitae nulla consequat libero cursus venenatis.</p>
+          Lorem ipsum dolor sit amet, <a href="">test</a> consectetuer adipiscing elit. Morbi commodo, ipsum sed pharetra gravida, <input type="text" value="test"/> orci magna rhoncus neque, id pulvinar odio lorem non turpis. Nullam sit amet enim. Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh eget ipsum. Donec porttitor ligula eu dolor. Maecenas vitae nulla consequat libero cursus venenatis.</p>
         </div>
         
       </div>
