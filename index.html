@@ -16,6 +16,7 @@
   -->
   <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
   <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+  <script type="text/javascript" charset="utf-8" src="iscroll.js"></script>
   <script type="text/javascript" charset="utf-8">
 
 
@@ -59,6 +60,10 @@
     $('#usercard').css('background', colors[userColor]);
     // $('.card').bind(ev, stop);
     // intvl = setInterval(changeCard, 100);
+    
+    document.addEventListener('touchmove', function(e){ e.preventDefault(); });
+
+    myScroll = new iScroll('menuInner', {desktopCompatibility:true});
         
   });
   
@@ -108,28 +113,32 @@
   function goToPage(pageId) {
     var elem = $('#menu');
     var transTime = maxTransTime;
+    debugger;
     while(elem.attr('id') != pageId) {
-      elem.css('-webkit-transition-duration', transTime+'s').addClass('tileHidden');
+      elem.css('-webkit-transition-duration', transTime+'s').addClass('tileWrapperHidden');
+      elem.find('.tile').css('-webkit-transition-duration', transTime+'s').addClass('tileHidden');
       transTime = transTime + 0.2;
       elem = elem.prev();
-      currPage = elem;
+      currPage = elem;      
     }
-    // $('#back').css('opacity', 1);
+    $('#back').css('-webkit-transition-duration', transTime+'s').addClass('visible');
+    
+    myScroll = new iScroll(pageId+'Inner', {desktopCompatibility:true});
   }
   
   function goHome() {
-    if(!currPage) { return false; }
-    
-    // $('#back').css('opacity', 0);
-    
+    if(!currPage) { return false; }    
     
     var elem = currPage;
     currPage = null;
     var transTime = maxTransTime;
     
+    $('#back').css('-webkit-transition-duration', transTime+'s').removeClass('visible');
+    
     while(elem.attr('id') != 'menu') {
       elem = elem.next();
-      elem.css('-webkit-transition-duration', transTime+'s').removeClass('tileHidden');
+      elem.css('-webkit-transition-duration', transTime+'s').removeClass('tileWrapperHidden');
+      elem.find('.tile').css('-webkit-transition-duration', transTime+'s').removeClass('tileHidden');
       transTime = transTime + 0.2;
     }
   }
@@ -138,25 +147,41 @@
 </head>
 <body id="stage" class="theme" onload="onBodyLoad()">
   <div id="frame" class="content current">
-      <div id="test" class="tile hinted">
+    <div id="test" class="tileWrapper">
+
+      <div class="tile">
         <h1 class="title">TEST</h1>
       </div>
-      <div id="settings" class="tile hinted">
+    </div>
+    <div id="settings" class="tileWrapper">
+
+      <div class="tile">
         <h1 class="title">SETTINGS</h1>
       </div>
-      <div id="help" class="tile hinted">
-        <h1 class="title">HELP</h1>
-      </div>
-      <div id="menu" class="tile hinted">
-        <h1 class="title">MENU</h1>
+    </div>
+    <div id="help" class="tileWrapper">
+      <div class="tile">
+        <div id="helpInner" class="tileInner">
+          <h1 class="title">MindSet / Help</h1>
+          <p>
+          Lorem ipsum dolor sit amet, <a href="">test</a> consectetuer adipiscing elit. Morbi commodo, ipsum sed pharetra gravida, <input type="text" value="test"></input> orci magna rhoncus neque, id pulvinar odio lorem non turpis. Nullam sit amet enim. Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh eget ipsum. Donec porttitor ligula eu dolor. Maecenas vitae nulla consequat libero cursus venenatis.</p>
+        </div>
         
-        <a href="javascript:goToPage('test')" id="click">test</a> <br/>
-        <a href="javascript:goToPage('settings')" id="click">settings</a> <br/>
-        <a href="javascript:goToPage('help')" id="click">help</a> <br/>        
-        <div id="back">
-          <a href="javascript:goHome()" id="click">Home</a> <br/>        
+      </div>
+    </div>
+    <div id="menu" class="tileWrapper">
+      <div class="tile">        
+        <div id="menuInner" class="tileInner">
+          <h1 class="title">MindSet</h1>
+          <a href="javascript:goToPage('test')" id="click">test</a>
+          <a href="javascript:goToPage('settings')" id="click">settings</a>
+          <a href="javascript:goToPage('help')" id="click">help</a>
         </div>
       </div>
+      <div id="back">
+        <a href="javascript:goHome()" id="click">Home</a> <br/>        
+      </div>
+    </div>
 
   </div>  
 </body>

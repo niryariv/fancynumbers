@@ -29,63 +29,104 @@ div.content h1{
   display: block;
 }
 
-div.tile{
+div.tileWrapper{
   position: absolute;
-  top: 4%;
-  left: 4%;
-  height: 90%;
-  width: 90%;
-  min-height: 90%;
+  width: 200%;
+  height: 200%;
+  padding: 2%;
+  top: 0;
+  left: 0;
+/*  background: white;*/
+}
+
+div.tile{
+  position: relative;
+  height: 200px;
+  width: 48%;
+  min-height: 46%;
   margin: 0;
   border: 0;
   padding: 0;
-/*  opacity: 0.5;*/
   border-radius: 20px;
   font-size: 20px;
   line-height: 24px;
+  z-index: 100;
+  
+	overflow:hidden;
 }
 
-div#test{
+div#test div.tile{
   background: #6566ff;
 }
 
-div#settings{
+div#settings div.tile{
   background: #00ccff;
 }
 
-div#help{
+div#help div.tile{
   background: #33cd34;
 }
 
-div#menu{
+div#menu div.tile{
   background: #f8f701;
+  text-align: center;
 }
 
-
-div.tile{
-  -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
-  -webkit-perspective: 1000;
-  -webkit-transition-property: translate3d rotateZ;
-  -webkit-transition-timing-function: ease-in-out;
+div#menu div.tile h1 {
+  margin-bottom: 40px;
 }
 
-div.tileHidden{
-  -webkit-transform: translate3d(90%, 90%, 0) rotateZ(90deg);  
-/*  -webkit-transform: translateY(100%);*/
-  
+h1.title {
+  width: 100%;
+  background-color: inherit;
+}
+
+div#menu div.tile a {
+  display: block;
+  width: 100%;
+  height: 30%;
+  text-decoration: none;
 }
 
 div#back{
   position: absolute;
   background: #f8f701;
-  top: 90%;
-  left: 0%;
-  -webkit-transform: translate3d(0, 0, 0) rotateZ(-90deg);
-  -webkit-transition-property: opacity;
-  -webkit-transition-duration: 2s;    
-/*  opacity: 0;*/
-border-radius: 10px;
+  border-radius: 10px;
+}
 
+
+div.tileWrapper{
+  -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
+  -webkit-perspective: 1000;
+  -webkit-transition-property: translate3d rotateZ;
+  -webkit-transition-timing-function: ease-in-out;  
+  z-index: 10;
+}
+
+div.tileWrapperHidden{
+  -webkit-transform: translate3d(50%, 0%, 0) rotateZ(90deg);   
+}
+
+div.tile{
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-perspective: 1000;
+  -webkit-transition-property: translate3d;
+  -webkit-transition-timing-function: ease-in-out;  
+}
+
+div.tileHidden{
+  -webkit-transform: translate3d(0%, 80%, 0);  
+}
+
+div#back{
+  -webkit-transform: translate3d(10%, -70%, 0);
+  -webkit-perspective: 1000;
+  -webkit-transition-property: translate3d;
+  -webkit-transition-timing-function: ease-in-out;
+}
+
+div#back.visible{
+  -webkit-transform: translate3d(10%, 240%, 0);
 }
 
 div#back a{
@@ -93,3 +134,11 @@ div#back a{
   height: 100px;
   width: 100%;
 }
+
+
+div.tileInner{
+  padding-right: 8%;
+  padding-bottom: 100px;
+  z-index:100;
+}
+
