@@ -56,14 +56,11 @@
   var intvl = null;
   //touchend
   //mouseup
-  var ev = 'touchend';
+  var ev = 'mouseup';
   
   $(document).ready(function(){         
-       
-    setColor(userColor);
-    $('#usercard').css('background', colors[userColor]);
-    // $('.card').bind(ev, stop);
-    // intvl = setInterval(changeCard, 100);
+    
+    $('#theTest').bind(ev, function(){toggleTest();});
     
     document.addEventListener('touchmove', function(e){ e.preventDefault(); });
 
@@ -75,10 +72,11 @@
     // testDB();
   });
   
+  
+////////// DB ////////////
+  
   var User;
   var Test;
-  
-  
   
   function prepDB(){
     if (window.openDatabase) {
@@ -121,13 +119,20 @@
     });
   }
   
-  function rotateIt(e){
-    $('#br').addClass('tileHidden');
-    $('#bl').addClass('tileHidden');
-    $('#tr').addClass('tileHidden');
-    return false;
-  }
   
+////////// THE TEST ////////////  
+  var testIsOn = false;
+  function toggleTest(){
+    if(testIsOn){
+      $('#theTest').removeClass('showTest').unbind('webkitTransitionEnd').stopTest();
+    } else {
+      setColor(userColor);
+      $('#theTest').addClass('showTest').bind('webkitTransitionEnd', startTest);
+    }
+    testIsOn = !testIsOn;
+  }
+
+
   function changeCard(){
     console.log('change');
       var color = getNextColor();
@@ -149,10 +154,15 @@
   }
 
   function setColor(color) {
-    $('#card').css('background', colors[color]);
+    $('#theCard').css('background', colors[color]);
   }
 
-  function stop(e){
+  function startTest(){
+    intvl = setInterval(changeCard, 100);
+    $('#theCard').css('background', colors[userColor]);
+  }
+
+  function stopTest(){
     clearInterval(intvl);
     alert('total: '+totalCards+', user chosen card: '+totalUserCard);
     alert('expected appearance: '+(1 / colors.length)+', actual appearance: '+ (totalUserCard / totalCards));
@@ -167,7 +177,6 @@
   function goToPage(pageId) {
     var elem = $('#menu');
     var transTime = maxTransTime;
-    debugger;
     while(elem.attr('id') != pageId) {
       elem.css('-webkit-transition-duration', transTime+'s').addClass('tileWrapperHidden');
       elem.find('.tile').css('-webkit-transition-duration', transTime+'s').addClass('tileHidden');
@@ -177,7 +186,8 @@
     }
     $('#back').css('-webkit-transition-duration', transTime+'s').addClass('visible');
     
-    myScroll = new iScroll(pageId+'Inner', {desktopCompatibility:true});
+    if($(pageId+'Inner'))
+      myScroll = new iScroll(pageId+'Inner', {desktopCompatibility:true});
   }
   
   function goHome() {
@@ -205,6 +215,9 @@
 
       <div class="tile">
         <h1 class="title">TEST</h1>
+        <a href="javascript:toggleTest()">start</a>
+        <br/>
+        <p>Once the experiment is started, click anywhere on the screen to stop it.</p>
       </div>
     </div>
     <div id="settings" class="tileWrapper">
@@ -227,13 +240,19 @@
       <div class="tile">        
         <div id="menuInner" class="tileInner">
           <h1 class="title">MindSet</h1>
-          <a href="javascript:goToPage('test')" id="click">test</a>
-          <a href="javascript:goToPage('settings')" id="click">settings</a>
-          <a href="javascript:goToPage('help')" id="click">help</a>
+          <a href="javascript:goToPage('test')">test</a>
+          <a href="javascript:goToPage('settings')">settings</a>
+          <a href="javascript:goToPage('help')">help</a>
         </div>
       </div>
       <div id="back">
         <a href="javascript:goHome()" id="click">Home</a> <br/>        
+      </div>
+    </div>
+
+    <div id="theTest">
+      <div id="theCard">
+      the test
       </div>
     </div>
 
