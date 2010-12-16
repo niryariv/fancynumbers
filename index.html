@@ -17,6 +17,7 @@
   <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
   <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
   <script type="text/javascript" charset="utf-8" src="iscroll.js"></script>
+  <!-- script type="text/javascript" charset="utf-8" src="raphael.js"></script -->
   <script type="text/javascript" charset="utf-8" src="persistence/persistence.js"></script>
   <script type="text/javascript" charset="utf-8" src="persistence/persistence.store.sql.js"></script>
   <script type="text/javascript" charset="utf-8" src="persistence/persistence.store.websql.js"></script>
@@ -53,12 +54,19 @@
   var intvl = null;
   //touchend
   //mouseup
-  var ev = 'touchend';
+  
+  var config = {
+    cardsPerRow : 15,
+    cardsPerColumn : 20,
+    cardRate: 20,
+    eventName: 'mouseup'
+  }
   
   $(document).ready(function(){         
     
-    $('#theExperiment').bind(ev, function(){toggleExperiment();});
+    $('#theExperiment').bind(config.eventName, function(){toggleExperiment();});
     setReminder();
+    initCardPool(config.cardsPerRow * config.cardsPerColumn);
     
     document.addEventListener('touchmove', function(e){ e.preventDefault(); });
 
@@ -122,6 +130,11 @@
   var experimentIsOn = false;
   var experimentScroll; 
   var cardWrapper;
+  var startTime;
+  var endTime;
+  var cardsPool;
+  var cardW;
+  var cardH;
   
   function toggleExperiment(){
     if(experimentIsOn){
@@ -144,16 +157,21 @@
       totalCards++;
       if(color == userColor)
         totalUserCard++;
+      var c;
       
-      
-      //make new card with color and append it;
-      $('#cardWrapper').append('<div id="card'+totalCards+'" class="aCard" style="background: '+colors[color]+'"></div>');
-      if(cardWrapper.offsetHeight < cardWrapper.scrollHeight) {
-        while(cardWrapper.offsetHeight < cardWrapper.scrollHeight){
-          $('#cardWrapper > .aCard:first-child').remove();
+      if(!cardsPool.length){
+        for(var i=0;i < config.cardsPerRow; i++){
+          //remove the first card 
+          c = cardWrapper.firstChild;
+          cardWrapper.removeChild(c);
+          cardsPool.push(c);
         }
-        // cardWrapper.scrollTop = cardWrapper.scrollHeight - cardWrapper.offsetHeight;
       }
+      
+      c = cardsPool.pop();
+      
+      $(c).css('background', colors[color]);
+      cardWrapper.appendChild(c);
   }
 
 
@@ -182,22 +200,46 @@
   }
 
   function startExperiment(){
+    startTime = new Date();
     experimentScroll = new iScroll('cardWrapper', {desktopCompatibility:true});
-    intvl = setInterval(addCard, 20);
+    intvl = setInterval(addCard, config.cardRate);
     cardWrapper = document.getElementById('cardWrapper');
   }
 
   function stopExperiment(){
     clearInterval(intvl);
+    endTime = new Date();
+  }
+  
+  function initCardPool(num){
+    cardW = Math.floor($("#cardWrapper").width() / config.cardsPerRow);
+    cardH = Math.floor($("#cardWrapper").height() / config.cardsPerColumn);
+    cardsPool = null;
+    cardsPool = [];
+    for(var i=0; i<num; i++){
+      cardsPool.push(createOneCard());
+    }
+  }
+  
+  function createOneCard(){
+    var c = document.createElement('div');
+    $(c).addClass('aCard').css('width', cardW - 2 +'px').css('height', cardH - 2 +'px').css('margin-left', '2px').css('margin-top', '2px');
+    return c;
   }
   
   function experimentStats(){
-    alert('total: '+totalCards+', user chosen card: '+totalUserCard);
+    var time = (endTime.getTime() - startTime.getTime()) / 1000;
+    var cardPerSecond = totalCards / time;
+    alert('total: '+totalCards+'(ran '+time+' seconds, '+cardPerSecond+' cards per second), user chosen card: '+totalUserCard);
     alert('expected appearance: '+(1 / colors.length)+', actual appearance: '+ (totalUserCard / totalCards));
   }
   
   function resetExperiment(){
-    $('.aCard').remove();
+    var c;
+    while(c = cardWrapper.firstChild){
+      cardsPool.push(c);
+      cardWrapper.removeChild(c);
+    }
     totalCards = 0;
     totalUserCard = 0;
   }

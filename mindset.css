@@ -31,8 +31,8 @@ div.content h1{
 
 div.tileWrapper{
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 98%;
+  height: 98%;
   padding: 2%;
   top: 0;
   left: 0;
@@ -158,10 +158,10 @@ div#cardWrapper{
 div.aCard{
   position: relative;
   float: left;
-  height: 6%;
+/*  height: 6%;
   width: 6%;
   margin-left: 1%;
-  margin-top: 1%; 
+  margin-top: 1%; */
 }
 
 div#colorReminder{
