@@ -216,7 +216,6 @@
     var transTime = maxTransTime;
     while(elem.attr('id') != pageId) {
       elem.css('-webkit-transition-duration', transTime+'s').addClass('tileWrapperHidden');
-      elem.find('.tile').css('-webkit-transition-duration', transTime+'s').addClass('tileHidden');
       transTime = transTime + 0.2;
       elem = elem.prev();
       currPage = elem;      
@@ -239,7 +238,6 @@
     while(elem.attr('id') != 'menu') {
       elem = elem.next();
       elem.css('-webkit-transition-duration', transTime+'s').removeClass('tileWrapperHidden');
-      elem.find('.tile').css('-webkit-transition-duration', transTime+'s').removeClass('tileHidden');
       transTime = transTime + 0.2;
     }
   }
@@ -249,7 +247,6 @@
 <body id="stage" class="theme" onload="onBodyLoad()">
   <div id="frame" class="content current">
     <div id="experiment" class="tileWrapper">
-
       <div class="tile">
         <div class="tileInner">
           <h1 class="title">MindSet / Experiment</h1>

@@ -31,19 +31,20 @@ div.content h1{
 
 div.tileWrapper{
   position: absolute;
-  width: 200%;
-  height: 200%;
+  width: 100%;
+  height: 100%;
   padding: 2%;
   top: 0;
   left: 0;
-/*  background: white;*/
+/*  background: white;
+  border: 1px solid red;*/
 }
 
 div.tile{
   position: relative;
-  height: 200px;
-  width: 48%;
-  min-height: 46%;
+  height: 10px;
+  width: 98%;
+  min-height: 98%;
   margin: 0;
   border: 0;
   padding: 0;
@@ -93,6 +94,8 @@ div#menu div.tile a {
 
 div#back{
   position: absolute;
+  top: -6%;
+  left: 86%;
   background: #f8f701;
   border-radius: 10px;
 }
@@ -100,6 +103,7 @@ div#back{
 
 div.tileWrapper{
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
+  -webkit-transform-origin: 98% 2%;
   -webkit-perspective: 1000;
   -webkit-transition-property: translate3d rotateZ;
   -webkit-transition-timing-function: ease-in-out;  
@@ -107,34 +111,9 @@ div.tileWrapper{
 }
 
 div.tileWrapperHidden{
-  -webkit-transform: translate3d(50%, 0%, 0) rotateZ(90deg);   
+  -webkit-transform: translate3d(0, 0, 0) rotateZ(-90deg);   
 }
 
-
-div.tile{
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-perspective: 1000;
-  -webkit-transition-property: translate3d;
-  -webkit-transition-timing-function: ease-in-out;  
-
-  -webkit-transform-origin: 100% 100%;
-  
-}
-
-div.tileHidden{
-  -webkit-transform: translate3d(0%, 80%, 0);  
-}
-
-div#back{
-  -webkit-transform: translate3d(10%, -70%, 0);
-  -webkit-perspective: 1000;
-  -webkit-transition-property: translate3d;
-  -webkit-transition-timing-function: ease-in-out;
-}
-
-div#back.visible{
-  -webkit-transform: translate3d(10%, 240%, 0);
-}
 
 div#back a{
   display: block;
