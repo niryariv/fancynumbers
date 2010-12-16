@@ -43,12 +43,9 @@
   {
   }
 
-  var score = 0;
-  var current = -1;
   
   var colors = ['#6566ff', '#00ccff', '#33cd34', '#f8f701', '#fd6601', '#fe0002','#960298', '#960300'];
   var userColor = 0;
-  var isPrefs = false;
   
   var totalCards = 0;
   var totalUserCard = 0;
@@ -56,27 +53,28 @@
   var intvl = null;
   //touchend
   //mouseup
-  var ev = 'mouseup';
+  var ev = 'touchend';
   
   $(document).ready(function(){         
     
-    $('#theTest').bind(ev, function(){toggleTest();});
+    $('#theExperiment').bind(ev, function(){toggleExperiment();});
+    setReminder();
     
     document.addEventListener('touchmove', function(e){ e.preventDefault(); });
 
     myScroll = new iScroll('menuInner', {desktopCompatibility:true});
         
-        
-    prepDB();    
     
-    // testDB();
+    // prepDB();    
+    
+    // experimentDB();
   });
   
   
 ////////// DB ////////////
   
   var User;
-  var Test;
+  var Experiment;
   
   function prepDB(){
     if (window.openDatabase) {
@@ -91,13 +89,13 @@
     User.index('name', {unique:true});
     
     
-    Test = persistence.define('tests', {
+    Experiment = persistence.define('experiments', {
       timestamp: "DATE",
       metadata: "JSON"
     });
-    Test.index('timestamp');
+    Experiment.index('timestamp');
     
-    User.hasMany('tests', Test, 'tests');
+    User.hasMany('experiments', Experiment, 'experiments');
     
     persistence.schemaSync();
     
@@ -110,7 +108,7 @@
     
   }
   
-  function testDB(){
+  function experimentDB(){
     var allUsers = User.all();    
     allUsers.list(null, function (results) {
         results.forEach(function (r) {
@@ -120,16 +118,42 @@
   }
   
   
-////////// THE TEST ////////////  
-  var testIsOn = false;
-  function toggleTest(){
-    if(testIsOn){
-      $('#theTest').removeClass('showTest').unbind('webkitTransitionEnd').stopTest();
+////////// THE EXPERIMENT ////////////  
+  var experimentIsOn = false;
+  var experimentScroll; 
+  var cardWrapper;
+  
+  function toggleExperiment(){
+    if(experimentIsOn){
+      stopExperiment();
+      experimentStats();
+      $('#theExperiment').removeClass('showExperiment').unbind('webkitTransitionEnd').bind('webkitTransitionEnd', function(){
+        $('#theExperiment').unbind('webkitTransitionEnd');
+        resetExperiment();
+      });
     } else {
       setColor(userColor);
-      $('#theTest').addClass('showTest').bind('webkitTransitionEnd', startTest);
+      $('#theExperiment').addClass('showExperiment').bind('webkitTransitionEnd', startExperiment);
     }
-    testIsOn = !testIsOn;
+    experimentIsOn = !experimentIsOn;
+  }
+
+  function addCard(){
+    // console.log('add');
+      var color = getNextColor();
+      totalCards++;
+      if(color == userColor)
+        totalUserCard++;
+      
+      
+      //make new card with color and append it;
+      $('#cardWrapper').append('<div id="card'+totalCards+'" class="aCard" style="background: '+colors[color]+'"></div>');
+      if(cardWrapper.offsetHeight < cardWrapper.scrollHeight) {
+        while(cardWrapper.offsetHeight < cardWrapper.scrollHeight){
+          $('#cardWrapper > .aCard:first-child').remove();
+        }
+        // cardWrapper.scrollTop = cardWrapper.scrollHeight - cardWrapper.offsetHeight;
+      }
   }
 
 
@@ -157,18 +181,31 @@
     $('#theCard').css('background', colors[color]);
   }
 
-  function startTest(){
-    intvl = setInterval(changeCard, 100);
-    $('#theCard').css('background', colors[userColor]);
+  function startExperiment(){
+    experimentScroll = new iScroll('cardWrapper', {desktopCompatibility:true});
+    intvl = setInterval(addCard, 20);
+    cardWrapper = document.getElementById('cardWrapper');
   }
 
-  function stopTest(){
+  function stopExperiment(){
     clearInterval(intvl);
+  }
+  
+  function experimentStats(){
     alert('total: '+totalCards+', user chosen card: '+totalUserCard);
     alert('expected appearance: '+(1 / colors.length)+', actual appearance: '+ (totalUserCard / totalCards));
   }
   
+  function resetExperiment(){
+    $('.aCard').remove();
+    totalCards = 0;
+    totalUserCard = 0;
+  }
 
+
+  function setReminder(){
+    $('#colorReminder').css('background', colors[userColor]);
+  }
 
 ////////// MENU ////////////
   var currPage = null;
@@ -184,7 +221,7 @@
       elem = elem.prev();
       currPage = elem;      
     }
-    $('#back').css('-webkit-transition-duration', transTime+'s').addClass('visible');
+    $('#back').css('-webkit-transition-duration', transTime+'s').addClass('visible');  
     
     if($(pageId+'Inner'))
       myScroll = new iScroll(pageId+'Inner', {desktopCompatibility:true});
@@ -211,13 +248,17 @@
 </head>
 <body id="stage" class="theme" onload="onBodyLoad()">
   <div id="frame" class="content current">
-    <div id="test" class="tileWrapper">
+    <div id="experiment" class="tileWrapper">
 
       <div class="tile">
-        <h1 class="title">TEST</h1>
-        <a href="javascript:toggleTest()">start</a>
-        <br/>
-        <p>Once the experiment is started, click anywhere on the screen to stop it.</p>
+        <div class="tileInner">
+          <h1 class="title">MindSet / Experiment</h1>
+          <p>Take a minute to memorize your color:</p>
+          <div id="colorReminder"></div>
+          <p>When you are done, press the button below to start the experiment.</p>
+          <a href="javascript:toggleExperiment()">start</a>
+          <p>Once the experiment has started, click anywhere on the screen to stop it.</p>
+        </div>
       </div>
     </div>
     <div id="settings" class="tileWrapper">
@@ -231,7 +272,7 @@
         <div id="helpInner" class="tileInner">
           <h1 class="title">MindSet / Help</h1>
           <p>
-          Lorem ipsum dolor sit amet, <a href="">test</a> consectetuer adipiscing elit. Morbi commodo, ipsum sed pharetra gravida, <input type="text" value="test"/> orci magna rhoncus neque, id pulvinar odio lorem non turpis. Nullam sit amet enim. Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh eget ipsum. Donec porttitor ligula eu dolor. Maecenas vitae nulla consequat libero cursus venenatis.</p>
+          Lorem ipsum dolor sit amet, <a href="">experiment</a> consectetuer adipiscing elit. Morbi commodo, ipsum sed pharetra gravida, <input type="text" value="experiment"/> orci magna rhoncus neque, id pulvinar odio lorem non turpis. Nullam sit amet enim. Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh eget ipsum. Donec porttitor ligula eu dolor. Maecenas vitae nulla consequat libero cursus venenatis.</p>
         </div>
         
       </div>
@@ -240,7 +281,7 @@
       <div class="tile">        
         <div id="menuInner" class="tileInner">
           <h1 class="title">MindSet</h1>
-          <a href="javascript:goToPage('test')">test</a>
+          <a href="javascript:goToPage('experiment')">experiment</a>
           <a href="javascript:goToPage('settings')">settings</a>
           <a href="javascript:goToPage('help')">help</a>
         </div>
@@ -250,10 +291,8 @@
       </div>
     </div>
 
-    <div id="theTest">
-      <div id="theCard">
-      the test
-      </div>
+    <div id="theExperiment" class="tileWrapper">
+        <div id="cardWrapper" class="tileInner"></div>
     </div>
 
   </div>  

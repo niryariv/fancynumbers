@@ -48,15 +48,16 @@ div.tile{
   border: 0;
   padding: 0;
   border-radius: 20px;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 24px;
   z-index: 100;
   
 	overflow:hidden;
 }
 
-div#test div.tile{
-  background: #6566ff;
+div#experiment div.tile{
+  background: gray;
+  color: black;
 }
 
 div#settings div.tile{
@@ -81,7 +82,7 @@ h1.title {
   background-color: inherit;
 }
 
-div#test div.tile a,
+div#experiment div.tile a,
 div#menu div.tile a {
   display: block;
   width: 100%;
@@ -148,7 +149,7 @@ div.tileInner{
   z-index:100;
 }
 
-div#theTest{
+div#theExperiment{
   width: 100%;
   height: 100%;
   position: absolute;
@@ -160,14 +161,36 @@ div#theTest{
   -webkit-transition-duration: 2s;
 }
 
-div#theTest.showTest{
+div#theExperiment.showExperiment{
   top: 0;
 }
 
-div#theCard{
-  height: 90%;
-  width: 90%;
-  margin: 5%;
-  border-radius: 16px;
+div#cardWrapper{
+  height: 92%;
+  width: 96%;
+  top: 3%;
+  left: 2%;
+  padding: 1%;
+  border-radius: 4px;
+  background: black;
+  overflow: hidden;
 }
 
+div.aCard{
+  position: relative;
+  float: left;
+  height: 6%;
+  width: 6%;
+  margin-left: 1%;
+  margin-top: 1%; 
+}
+
+div#colorReminder{
+  position: relative;
+  width: 80%;
+  height: 40px;
+  min-height: 50%;
+  margin-left: 10%;
+  border: 1px solid #666;
+  border-radius: 16px;
+}
