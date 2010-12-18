@@ -1,7 +1,16 @@
+/*@font-face {
+    font-family: "Glypish";
+    src: local("Glypish"), url("fonts/glyphis.ttf") format("truetype");
+}*/
+
 html,body{ 
   height: 100%; 
   margin: 0; 
   padding: 0; 
+}
+
+a{
+  text-decoration: none;
 }
 
 div.content, div.tile{
@@ -57,7 +66,7 @@ div.tile{
 }
 
 div#experiment div.tile{
-  background: gray;
+  background: white;
   color: black;
 }
 
@@ -92,14 +101,55 @@ div#menu div.tile a {
   text-align: center;
 }
 
-div#back{
-  position: absolute;
-  top: -6%;
-  left: 86%;
-  background: #f8f701;
-  border-radius: 10px;
+div#menu div.tile a{
+  text-align: left;
+  padding-left: 24%;
+  line-height: 40px;
+  font-size: 26px;
+  margin-bottom: 0;
 }
 
+span.icon{
+  font-family: "glyphish";
+  text-decoration: none;
+  
+}
+
+div#menu div.tile a span.icon,
+div#back a{
+}
+
+div#menu div.tile a span.icon{
+  font-size: 50px;
+  font-size: 50px;
+  line-height: 60px;
+}
+
+div#back{
+  position: absolute;
+  top: 0;
+  left: 110%;
+  background: #f8f701;
+  border-radius: 10px;
+  text-align: center;
+}
+
+div#back a{
+  font-size: 40px;
+  line-height: 40px;
+  margin: auto;
+}
+
+div#back{
+  -webkit-transform: translate3d(100%, 0, 0) rotateZ(-90deg);
+  -webkit-perspective: 1000;
+  -webkit-transition-property: translate3d;
+  -webkit-transition-timing-function: ease-in;  
+  z-index: 10;
+}
+div#back.backShown{
+  -webkit-transform: translate3d(-90%, 0, 0) rotateZ(-90deg);
+}
 
 div.tileWrapper{
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0deg);
@@ -132,24 +182,33 @@ div#theExperiment{
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 0;
+  left: -110%;
   z-index: 1000;
   background: #666;
-  -webkit-transition-property: top;
+  -webkit-transition-property: left;
   -webkit-transition-duration: 2s;
 }
 
+div#experiment a{
+  font-size: 40px;
+}
+
+div#experiment a span.icon{
+  font-size: 50px;
+}
+
 div#theExperiment.showExperiment{
-  top: 0;
+  left: 0;
 }
 
 div#cardWrapper{
-  height: 92%;
+  height: 66%;
   width: 96%;
   top: 3%;
   left: 2%;
-  padding: 1%;
+  padding: 0;
+  margin: 0;
   border-radius: 4px;
   background: black;
   overflow: hidden;
@@ -164,12 +223,17 @@ div.aCard{
   margin-top: 1%; */
 }
 
-div#colorReminder{
+div#colorReminder, 
+div#resultsGraph{
   position: relative;
   width: 80%;
   height: 40px;
-  min-height: 50%;
-  margin-left: 10%;
+  min-height: 10%;
+  margin: 2% 10% 4% 10%;
   border: 1px solid #666;
   border-radius: 16px;
+}
+
+div#resultsGraph{
+  background: white;
 }

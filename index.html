@@ -17,7 +17,6 @@
   <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
   <script type="text/javascript" charset="utf-8" src="zepto.js"></script>
   <script type="text/javascript" charset="utf-8" src="iscroll.js"></script>
-  <!-- script type="text/javascript" charset="utf-8" src="raphael.js"></script -->
   <script type="text/javascript" charset="utf-8" src="persistence/persistence.js"></script>
   <script type="text/javascript" charset="utf-8" src="persistence/persistence.store.sql.js"></script>
   <script type="text/javascript" charset="utf-8" src="persistence/persistence.store.websql.js"></script>
@@ -52,15 +51,20 @@
   var totalUserCard = 0;
   
   var intvl = null;
-  //touchend
-  //mouseup
+
   
   var config = {
-    cardsPerRow : 15,
-    cardsPerColumn : 20,
+    cardsPerRow : 12,
+    cardsPerColumn : 12,
+    cardMargin : 2,
     cardRate: 20,
-    eventName: 'mouseup'
-  }
+    eventName: 'touchend',
+    graph : { 
+                resolution: 20,
+                rate: 100
+            }
+  }  //touchend
+    //mouseup
   
   $(document).ready(function(){         
     
@@ -72,7 +76,6 @@
 
     myScroll = new iScroll('menuInner', {desktopCompatibility:true});
         
-    
     // prepDB();    
     
     // experimentDB();
@@ -160,8 +163,8 @@
       var c;
       
       if(!cardsPool.length){
+        //remove the first row 
         for(var i=0;i < config.cardsPerRow; i++){
-          //remove the first card 
           c = cardWrapper.firstChild;
           cardWrapper.removeChild(c);
           cardsPool.push(c);
@@ -169,7 +172,7 @@
       }
       
       c = cardsPool.pop();
-      
+        
       $(c).css('background', colors[color]);
       cardWrapper.appendChild(c);
   }
@@ -181,7 +184,7 @@
       totalCards++;
       if(color == userColor)
         totalUserCard++;
-      setColor(color);
+      setColor(color);      
   }
 
   function getNextColor(origColor){
@@ -199,21 +202,23 @@
     $('#theCard').css('background', colors[color]);
   }
 
-  function startExperiment(){
+  function startExperiment() {
     startTime = new Date();
-    experimentScroll = new iScroll('cardWrapper', {desktopCompatibility:true});
     intvl = setInterval(addCard, config.cardRate);
     cardWrapper = document.getElementById('cardWrapper');
+    initGraph();
+    graphIntvl = setInterval(updateGraph, config.graph.rate);
   }
 
   function stopExperiment(){
     clearInterval(intvl);
+    clearInterval(graphIntvl);
     endTime = new Date();
   }
   
   function initCardPool(num){
-    cardW = Math.floor($("#cardWrapper").width() / config.cardsPerRow);
-    cardH = Math.floor($("#cardWrapper").height() / config.cardsPerColumn);
+    cardW = Math.floor($("#cardWrapper").width()  / config.cardsPerRow);
+    cardH = Math.floor($("#cardWrapper").height()  / config.cardsPerColumn);
     cardsPool = null;
     cardsPool = [];
     for(var i=0; i<num; i++){
@@ -223,7 +228,7 @@
   
   function createOneCard(){
     var c = document.createElement('div');
-    $(c).addClass('aCard').css('width', cardW - 2 +'px').css('height', cardH - 2 +'px').css('margin-left', '2px').css('margin-top', '2px');
+    $(c).addClass('aCard').css('width', cardW - config.cardMargin +'px').css('height', cardH - config.cardMargin +'px').css('margin-left', config.cardMargin+'px').css('margin-top', config.cardMargin+'px');
     return c;
   }
   
@@ -243,11 +248,52 @@
     totalCards = 0;
     totalUserCard = 0;
   }
-
-
+  
   function setReminder(){
     $('#colorReminder').css('background', colors[userColor]);
   }
+
+////////// THE GRAPH ////////////  
+var resultsGraph;
+var results = [];
+var graphIntvl;
+
+  function initGraph(){
+    $('#resultsGraph').html('<canvas id="graphCanvas" width="'+$('#resultsGraph').width()+'" height="'+$('#resultsGraph').height()+'"></canvas>');
+    canvas = document.getElementById("graphCanvas");
+    resultsGraph = canvas.getContext("2d");    
+  }
+
+  function updateGraph(){
+    var i;
+    results.push(totalUserCard / totalCards);
+    if(results.length > config.graph.resolution)
+      results = results.slice(-config.graph.resolution);
+      
+    resultsGraph.clearRect(0, 0, $('#resultsGraph').width(), $('#resultsGraph').height());
+    resultsGraph.lineWidth = 4;
+    //draw probability line
+    resultsGraph.strokeStyle = "gray";
+    resultsGraph.beginPath();
+    
+    for(i=0; i<results.length; i++){
+      resultsGraph.lineTo(i * Math.ceil($('#resultsGraph').width() / config.graph.resolution), $('#resultsGraph').height()/2);
+      resultsGraph.stroke();
+    }
+      
+    //draw actual results line
+    resultsGraph.strokeStyle = colors[userColor];
+    resultsGraph.beginPath();
+    for(i=0; i<results.length; i++){
+      resultsGraph.lineTo(i * Math.ceil($('#resultsGraph').width() / config.graph.resolution), $('#resultsGraph').height()/(2 * (1/colors.length)) * results[i]);
+      resultsGraph.stroke();
+    }
+   
+  }
+  
+
+
+  
 
 ////////// MENU ////////////
   var currPage = null;
@@ -262,7 +308,7 @@
       elem = elem.prev();
       currPage = elem;      
     }
-    $('#back').css('-webkit-transition-duration', transTime+'s').addClass('visible');  
+    $('#back').css('-webkit-transition-duration', transTime+'s').addClass('backShown');  
     
     if($(pageId+'Inner'))
       myScroll = new iScroll(pageId+'Inner', {desktopCompatibility:true});
@@ -275,7 +321,7 @@
     currPage = null;
     var transTime = maxTransTime;
     
-    $('#back').css('-webkit-transition-duration', transTime+'s').removeClass('visible');
+    $('#back').css('-webkit-transition-duration', transTime+'s').removeClass('backShown');
     
     while(elem.attr('id') != 'menu') {
       elem = elem.next();
@@ -293,9 +339,8 @@
         <div class="tileInner">
           <h1 class="title">MindSet / Experiment</h1>
           <p>Take a minute to memorize your color:</p>
-          <div id="colorReminder"></div>
-          <p>When you are done, press the button below to start the experiment.</p>
-          <a href="javascript:toggleExperiment()">start</a>
+          <p>When you are done, press the button below to start the experiment.</p>          
+          <a href="javascript:toggleExperiment()"><span class="icon">x</span>start</a>
           <p>Once the experiment has started, click anywhere on the screen to stop it.</p>
         </div>
       </div>
@@ -320,17 +365,18 @@
       <div class="tile">        
         <div id="menuInner" class="tileInner">
           <h1 class="title">MindSet</h1>
-          <a href="javascript:goToPage('experiment')">experiment</a>
-          <a href="javascript:goToPage('settings')">settings</a>
-          <a href="javascript:goToPage('help')">help</a>
+          <a href="javascript:goToPage('experiment')"><span class="icon">x</span>Experiment</a>
+          <a href="javascript:goToPage('settings')"><span class="icon">Q</span>Settings</a>
+          <a href="javascript:goToPage('help')"><span class="icon">ƒ</span>Help</a>
         </div>
       </div>
-      <div id="back">
-        <a href="javascript:goHome()" id="click">Home</a> <br/>        
-      </div>
     </div>
-
+    <div id="back">
+      <a href="javascript:goHome()" id="click"><span class="icon">_</span></a>
+    </div>
     <div id="theExperiment" class="tileWrapper">
+        <div id="colorReminder"></div>
+        <div id="resultsGraph"></div>
         <div id="cardWrapper" class="tileInner"></div>
     </div>
 
