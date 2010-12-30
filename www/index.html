@@ -48,7 +48,10 @@
 	var IMG_ID = 0;
 	var TOTAL_IMAGE_LINES = 10;
 	
-
+	var WIN_WIDTH = $(window).width()
+	
+	var TOUCH_EVENT = 'mouseup';
+	
 	$(document).ready(function(){         
 		// myScroll = new iScroll('menuInner', {desktopCompatibility:true});
 
@@ -61,7 +64,17 @@
 
 	});
 
+	function touch_image(e) {
+		// debugger;
+		$(e.target).remove();
+		// alert();
+		show_number($(e.target).attr('class').replace('number ', ''));
+	}
 
+	function show_number(num) {
+		$("#bignumber").html(num);
+	}
+	
 	function generate_images_line() {
 		for (x=0 ; x < 5 ; x++) {
 			img_id = add_image();
@@ -72,6 +85,7 @@
 			// dirx 	= Math.floor(Math.random() * 250);
 
 			$(id).anim({translate3d: dirx+"px, 500px, 0px"}, speed, 'ease-in-out 1ms');
+			$(id).bind(TOUCH_EVENT, function(e){ touch_image(e) });
 		}
 	}
 	
@@ -97,7 +111,9 @@
 </head>
 <body id="stage" class="theme" onload="onBodyLoad()">
 	<div id="frame" class="content current">
-		<div id="images"></div>  
+		<div id="images">
+			<div id="bignumber"></div>
+		</div>  
 	</div>	
 </body>
 </html>

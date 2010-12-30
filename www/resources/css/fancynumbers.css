@@ -12,3 +12,16 @@
 	width: 100px;
 	height: 100px;
 }
+
+#bignumber {
+	position:absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 100;
+
+	width: 100px;
+	height: 500px;	
+	
+	font-size: 300px;
+	color: #fff;
+}
