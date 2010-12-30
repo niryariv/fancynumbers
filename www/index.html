@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <!-- Change this if you want to allow scaling -->
+  <meta name="viewport" content="width=default-width; user-scalable=no" />
+
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+  <title>Fancy Numbers</title>
+  <link rel="stylesheet" href="resources/css/master.css" type="text/css" />		
+  <link rel="stylesheet" href="resources/css/fancynumbers.css" type="text/css" />		
+
+  <!-- iPad/iPhone specific css below, add after your main css >
+  <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
+  -->
+  <script type="text/javascript" charset="utf-8" src="libs/phonegap.js"></script>
+  <script type="text/javascript" charset="utf-8" src="libs/zepto.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="libs/iscroll.js"></script>
+  <!-- <script type="text/javascript" charset="utf-8" src="libs/persistence/persistence.js"></script>
+  <script type="text/javascript" charset="utf-8" src="libs/persistence/persistence.store.sql.js"></script>
+  <script type="text/javascript" charset="utf-8" src="libs/persistence/persistence.store.websql.js"></script> -->
+  
+  <script type="text/javascript" charset="utf-8">
+
+
+  // If you want to prevent dragging, uncomment this section
+  /*
+  function preventBehavior(e) 
+  { 
+  e.preventDefault(); 
+  };
+  document.addEventListener("touchmove", preventBehavior, false);
+  */
+
+  function onBodyLoad()
+  {
+    document.addEventListener("deviceready",onDeviceReady,false);
+  }
+
+  /* When this function is called, PhoneGap has been initialized and is ready to roll */
+  function onDeviceReady()
+  {
+  }
+
+	var NUMBERS = 10;
+	var IMG_PER_NUM = 20;
+	var IMG_ID = 0;
+	var TOTAL_IMAGE_LINES = 10;
+	
+
+	$(document).ready(function(){         
+		// myScroll = new iScroll('menuInner', {desktopCompatibility:true});
+
+		ctr = 0
+		work = setInterval(function() {
+			generate_images_line();
+			ctr++;
+			if (ctr > TOTAL_IMAGE_LINES) clearInterval(work);
+		}, (1 * 1000));		
+
+	});
+
+
+	function generate_images_line() {
+		for (x=0 ; x < 5 ; x++) {
+			img_id = add_image();
+			id = "#img-"+img_id;
+
+			speed 	= Math.floor(Math.random() * 25) + 5;
+			dirx 	= Math.floor(Math.random() * 500);
+			// dirx 	= Math.floor(Math.random() * 250);
+
+			$(id).anim({translate3d: dirx+"px, 500px, 0px"}, speed, 'ease-in-out 1ms');
+		}
+	}
+	
+		
+	function add_image() {
+		IMG_ID++;
+		number 	= Math.floor(Math.random() * NUMBERS);
+		img 	= Math.floor(Math.random() * IMG_PER_NUM);
+		
+		number++ ; img++;
+		
+		url = "resources/images/numbers/" + number + "/" + img + ".jpg";
+		img = "<img id=\"img-" + IMG_ID +"\" class=\"number " + number + "\" src=\"" + url +"\" />"
+		$("#images").append(img); 
+		
+		return (IMG_ID);
+		
+	}
+  
+  	
+  
+  </script>
+</head>
+<body id="stage" class="theme" onload="onBodyLoad()">
+	<div id="frame" class="content current">
+		<div id="images"></div>  
+	</div>	
+</body>
+</html>
