@@ -76,10 +76,10 @@
 			img_id = add_image();
 			id = "#img-"+img_id;
 
-			speed 	= Math.floor(Math.random() * 25) + 5;
+			speed 	= Math.floor(Math.random() * 20) + 10;
 			dirx 	= Math.floor(Math.random() * $('#frame').height());
-
-      finalHeight = $('#frame').height() + $(id).height();
+			
+      		finalHeight = $('#frame').height() + $(id).height();
 			$(id).anim({translate3d: dirx+"px, "+finalHeight+"px, 0px"}, speed, 'ease-in-out 1ms');
 			$(id).bind(TOUCH_EVENT, function(e){ touch_image(e) });
 		}
@@ -93,9 +93,13 @@
 		
 		number++ ; img++;
 		
-		url = "resources/images/numbers/" + number + "/" + img + ".jpg";
-		dirx = Math.floor(Math.random() * $('#frame').height());
-		img = "<img id=\"img-" + IMG_ID +"\" class=\"number " + number + "\" src=\"" + url +"\" style=\"top:-100px;left:"+dirx+"px\" />"
+		url = "resources/images/numbers/" + number + "/" + img + ".jpg"; 	// number img URL
+		dirx = Math.floor(Math.random() * $('#frame').height()); 			// X direction
+		corners = Math.floor(Math.random() * 30) + 5; 						// rounded corners
+		
+		img_style= "top: -100px; left: "+ dirx +"px; border-radius: "+ corners +"px;";		
+		img = '<img id="img-'+ IMG_ID +'" class="number '+ number + '" src="'+ url +'" style="'+ img_style +'" />';
+		
 		$("#images").append(img); 
 		
 		return (IMG_ID);
