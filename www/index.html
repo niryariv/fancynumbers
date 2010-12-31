@@ -102,7 +102,7 @@
 		corners = Math.floor(Math.random() * 30) + 5; 						// rounded corners
 		// z_index = Math.floor(Math.random() * 10); 							// z position
 		
-		img_style= "top: -100px; left: "+ dirx +"px; border-radius: "+ corners +"px; z-index: 1"; // apparently changing z_index makes some imgs unclickable
+		img_style= "top: -100px; left: "+ dirx +"px; -webkit-border-radius: "+ corners +"px; z-index: 1"; // apparently changing z_index makes some imgs unclickable
 				
 		img = '<img id="img-'+ IMG_ID +'" class="number '+ number + '" src="'+ url +'" style="'+ img_style +'" />';
 		
