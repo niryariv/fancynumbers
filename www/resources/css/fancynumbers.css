@@ -10,10 +10,9 @@
 .number {
 	position:absolute;
 	top: -50px;
-	
+
 	width: 100px;
 	height: 100px;
-	z-index: 1;
 	border-radius: 5px;
 /*	-webkit-border-radius: 30px;*/
 	

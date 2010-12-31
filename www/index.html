@@ -50,6 +50,7 @@
 	
 	var TOUCH_EVENT = 'mouseup';
 	
+	
 	$(document).ready(function(){         
 		ctr = 0
 		work = setInterval(function() {
@@ -62,7 +63,6 @@
 
 	function touch_image(e) {
 		$(e.target).remove();
-		// alert();
 		show_number($(e.target).attr('class').replace('number ', ''));
 	}
 
@@ -77,7 +77,10 @@
 			id = "#img-"+img_id;
 
 			speed 	= Math.floor(Math.random() * 20) + 10;
-			dirx 	= Math.floor(Math.random() * $('#frame').height());
+			dirx 	= Math.floor(Math.random() * $('#frame').width());
+
+			if ((Math.random() * 2) > 1) dirx = (-1 * dirx) ; // go left as well as right
+
 			
       		finalHeight = $('#frame').height() + $(id).height();
 			$(id).anim({translate3d: dirx+"px, "+finalHeight+"px, 0px"}, speed, 'ease-in-out 1ms');
@@ -94,10 +97,13 @@
 		number++ ; img++;
 		
 		url = "resources/images/numbers/" + number + "/" + img + ".jpg"; 	// number img URL
-		dirx = Math.floor(Math.random() * $('#frame').height()); 			// X direction
-		corners = Math.floor(Math.random() * 30) + 5; 						// rounded corners
+		dirx = Math.floor(Math.random() * $('#frame').width()); 			// X direction
 		
-		img_style= "top: -100px; left: "+ dirx +"px; border-radius: "+ corners +"px;";		
+		corners = Math.floor(Math.random() * 30) + 5; 						// rounded corners
+		// z_index = Math.floor(Math.random() * 10); 							// z position
+		
+		img_style= "top: -100px; left: "+ dirx +"px; border-radius: "+ corners +"px; z-index: 1"; // apparently changing z_index makes some imgs unclickable
+				
 		img = '<img id="img-'+ IMG_ID +'" class="number '+ number + '" src="'+ url +'" style="'+ img_style +'" />';
 		
 		$("#images").append(img); 
