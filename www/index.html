@@ -48,13 +48,9 @@
 	var IMG_ID = 0;
 	var TOTAL_IMAGE_LINES = 10;
 	
-	var WIN_WIDTH = $(window).width()
-	
 	var TOUCH_EVENT = 'mouseup';
 	
 	$(document).ready(function(){         
-		// myScroll = new iScroll('menuInner', {desktopCompatibility:true});
-
 		ctr = 0
 		work = setInterval(function() {
 			generate_images_line();
@@ -65,14 +61,14 @@
 	});
 
 	function touch_image(e) {
-		// debugger;
 		$(e.target).remove();
 		// alert();
 		show_number($(e.target).attr('class').replace('number ', ''));
 	}
 
 	function show_number(num) {
-		$("#bignumber").html(num);
+		$("#bignumber").html(num).css('display', 'block');
+		setTimeout(function(){$("#bignumber").css('display', 'none')}, 800);
 	}
 	
 	function generate_images_line() {
@@ -81,10 +77,10 @@
 			id = "#img-"+img_id;
 
 			speed 	= Math.floor(Math.random() * 25) + 5;
-			dirx 	= Math.floor(Math.random() * 500);
-			// dirx 	= Math.floor(Math.random() * 250);
+			dirx 	= Math.floor(Math.random() * $('#frame').height());
 
-			$(id).anim({translate3d: dirx+"px, 500px, 0px"}, speed, 'ease-in-out 1ms');
+      finalHeight = $('#frame').height() + $(id).height();
+			$(id).anim({translate3d: dirx+"px, "+finalHeight+"px, 0px"}, speed, 'ease-in-out 1ms');
 			$(id).bind(TOUCH_EVENT, function(e){ touch_image(e) });
 		}
 	}
@@ -98,7 +94,8 @@
 		number++ ; img++;
 		
 		url = "resources/images/numbers/" + number + "/" + img + ".jpg";
-		img = "<img id=\"img-" + IMG_ID +"\" class=\"number " + number + "\" src=\"" + url +"\" />"
+		dirx = Math.floor(Math.random() * $('#frame').height());
+		img = "<img id=\"img-" + IMG_ID +"\" class=\"number " + number + "\" src=\"" + url +"\" style=\"top:-100px;left:"+dirx+"px\" />"
 		$("#images").append(img); 
 		
 		return (IMG_ID);
