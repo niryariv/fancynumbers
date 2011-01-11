@@ -50,6 +50,7 @@
 	
 	var TOUCH_EVENT = 'mouseup';
 	
+	// var sound = new Media('resources/sound/1.wav').play();
 	
 	$(document).ready(function(){         
 		ctr = 0
@@ -64,6 +65,8 @@
 	function touch_image(e) {
 		$(e.target).remove();
 		show_number($(e.target).attr('class').replace('number ', ''));
+		new Media('resources/sound/1.wav').play();
+		// sound.play();
 	}
 
 	function show_number(num) {
