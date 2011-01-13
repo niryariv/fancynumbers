@@ -46,27 +46,37 @@
 	var NUMBERS = 10;
 	var IMG_PER_NUM = 20;
 	var IMG_ID = 0;
-	var TOTAL_IMAGE_LINES = 10;
+	var TOTAL_IMAGE_LINES = 50; // 10;
 	
 	var TOUCH_EVENT = 'mouseup';
 	
-	// var sound = new Media('resources/sound/1.wav').play();
+	var sound = new Array();
+
 	
+	function setup(){
+		sound[0] = new Media('resources/sound/1.wav');
+		sound[1] = new Media('resources/sound/2.wav');
+	}
+	
+
 	$(document).ready(function(){         
-		ctr = 0
+		setup();
+		
+		ctr = 1;
+		generate_images_line();
 		work = setInterval(function() {
 			generate_images_line();
 			ctr++;
 			if (ctr > TOTAL_IMAGE_LINES) clearInterval(work);
-		}, (1 * 1000));		
+		}, (Math.floor(Math.random() * 3000)));		
 
 	});
 
 	function touch_image(e) {
 		$(e.target).remove();
 		show_number($(e.target).attr('class').replace('number ', ''));
-		new Media('resources/sound/1.wav').play();
-		// sound.play();
+		sound_file = Math.floor(Math.random() * 2);
+		sound[sound_file].play();
 	}
 
 	function show_number(num) {
@@ -75,7 +85,7 @@
 	}
 	
 	function generate_images_line() {
-		for (x=0 ; x < 5 ; x++) {
+		// for (x=0 ; x < 5 ; x++) {
 			img_id = add_image();
 			id = "#img-"+img_id;
 
@@ -88,7 +98,7 @@
       		finalHeight = $('#frame').height() + $(id).height();
 			$(id).anim({translate3d: dirx+"px, "+finalHeight+"px, 0px"}, speed, 'ease-in-out 1ms');
 			$(id).bind(TOUCH_EVENT, function(e){ touch_image(e) });
-		}
+		// }
 	}
 	
 		
