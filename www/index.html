@@ -50,17 +50,16 @@
 	
 	var TOUCH_EVENT = 'mouseup';
 	
-	var sound = new Array();
-
+	var number_sound = new Array();
 	
-	function setup(){
-		sound[0] = new Media('resources/sound/1.wav');
-		sound[1] = new Media('resources/sound/2.wav');
+	function load_sounds(){	
+		for (i = 1 ; i <= 10 ; i++) 
+			number_sound[i] = new Media('resources/sound/number-' + i + '.wav');
 	}
 	
 
 	$(document).ready(function(){         
-		setup();
+		load_sounds();
 		
 		ctr = 1;
 		generate_images_line();
@@ -74,9 +73,9 @@
 
 	function touch_image(e) {
 		$(e.target).remove();
-		show_number($(e.target).attr('class').replace('number ', ''));
-		sound_file = Math.floor(Math.random() * 2);
-		sound[sound_file].play();
+		number = $(e.target).attr('class').replace('number ', '');
+		show_number(number);
+		number_sound[number].play();
 	}
 
 	function show_number(num) {
